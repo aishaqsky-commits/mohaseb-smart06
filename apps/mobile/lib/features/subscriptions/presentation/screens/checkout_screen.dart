@@ -5,6 +5,8 @@ import '../../data/payment_providers/payment_provider_interface.dart';
 import '../../data/payment_providers/jawali_adapter.dart';
 import '../../data/payment_providers/kuraimi_adapter.dart';
 import '../../data/payment_providers/floosak_adapter.dart';
+import '../../data/payment_providers/moyasar_adapter.dart';
+import '../../data/payment_providers/paymob_adapter.dart';
 import 'package:go_router/go_router.dart';
 
 class CheckoutScreen extends StatefulWidget {
@@ -26,6 +28,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     JawaliAdapter(),
     KuraimiAdapter(),
     FloosakAdapter(),
+    MoyasarAdapter(),
+    PaymobAdapter(),
   ];
 
   PaymentProviderAdapter? _selectedProvider;

@@ -202,9 +202,9 @@ class DashboardScreen extends StatelessWidget {
       {'label': 'تحصيل', 'icon': '📥', 'color': ColorTokens.neutralInfo, 'route': ''},
       {'label': 'سداد', 'icon': '📤', 'color': ColorTokens.warning, 'route': ''},
       {'label': 'شيكات', 'icon': '💳', 'color': Colors.deepPurple, 'route': '/checks'},
+      {'label': 'العملات', 'icon': '💱', 'color': Colors.teal, 'route': '/currencies'},
       {'label': 'مصروف', 'icon': '🧾', 'color': Colors.deepOrange, 'route': ''},
-      {'label': 'تالف', 'icon': '🗑️', 'color': Colors.grey, 'route': ''},
-      {'label': 'سجل', 'icon': '📋', 'color': Colors.blueGrey, 'route': ''},
+      {'label': 'الربط API', 'icon': '🔗', 'color': Colors.blueGrey, 'route': '/api-keys'},
     ];
 
     return GridView.builder(

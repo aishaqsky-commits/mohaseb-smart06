@@ -11,6 +11,8 @@ import '../../features/inventory/presentation/screens/warehouse_list_screen.dart
 import '../../features/inventory/presentation/screens/warehouse_transfer_screen.dart';
 import '../../features/checks/presentation/screens/checks_list_screen.dart';
 import '../../features/checks/presentation/screens/check_details_screen.dart';
+import '../../features/currencies/presentation/screens/currencies_list_screen.dart';
+import '../../features/api_integration/presentation/screens/api_keys_screen.dart';
 // import '../../features/journal/presentation/screens/journal_entry_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -57,6 +59,14 @@ final GoRouter appRouter = GoRouter(
         final Map<String, dynamic> args = state.extra as Map<String, dynamic>;
         return CheckDetailsScreen(checkData: args);
       },
+    ),
+    GoRoute(
+      path: '/currencies',
+      builder: (context, state) => const CurrenciesListScreen(),
+    ),
+    GoRoute(
+      path: '/api-keys',
+      builder: (context, state) => const ApiKeysScreen(),
     ),
     GoRoute(
       path: '/reports',
