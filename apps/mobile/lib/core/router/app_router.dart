@@ -4,6 +4,8 @@ import '../../features/contacts/presentation/screens/contacts_hub_screen.dart';
 import '../../features/inventory/presentation/screens/inventory_list_screen.dart';
 import '../../features/inventory/presentation/screens/inventory_check_screen.dart';
 import '../../features/subscriptions/presentation/screens/checkout_screen.dart';
+import '../../features/reports/presentation/screens/reports_dashboard_screen.dart';
+import '../../features/reports/presentation/screens/income_statement_screen.dart';
 // import '../../features/journal/presentation/screens/journal_entry_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -24,6 +26,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/inventory-check',
       builder: (context, state) => const InventoryCheckScreen(),
+    ),
+    GoRoute(
+      path: '/reports',
+      builder: (context, state) => const ReportsDashboardScreen(),
+    ),
+    GoRoute(
+      path: '/reports/income-statement',
+      builder: (context, state) => const IncomeStatementScreen(),
     ),
     GoRoute(
       path: '/checkout',

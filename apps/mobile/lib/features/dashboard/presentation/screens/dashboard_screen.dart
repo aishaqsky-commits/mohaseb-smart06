@@ -82,6 +82,7 @@ class DashboardScreen extends StatelessWidget {
         onTap: (index) {
           if (index == 1) context.push('/contacts');
           if (index == 2) context.push('/inventory');
+          if (index == 3) context.push('/reports');
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
