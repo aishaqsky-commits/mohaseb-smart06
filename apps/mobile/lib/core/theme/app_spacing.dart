@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppSpacing {
   // وحدة المسافة الأساسية
   static const double unit = 4.0;
+  static const double xs = 4.0;
   
   static const double sm = unit * 2;   // 8.0
   static const double md = unit * 3;   // 12.0

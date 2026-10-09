@@ -13,7 +13,10 @@ import '../../features/checks/presentation/screens/checks_list_screen.dart';
 import '../../features/checks/presentation/screens/check_details_screen.dart';
 import '../../features/currencies/presentation/screens/currencies_list_screen.dart';
 import '../../features/api_integration/presentation/screens/api_keys_screen.dart';
-// import '../../features/journal/presentation/screens/journal_entry_screen.dart';
+import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/operations/presentation/screens/operations_hub_screen.dart';
+import '../../features/operations/presentation/screens/operation_form_screen.dart';
+import '../../features/operations/presentation/screens/operation_summary_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -84,6 +87,30 @@ final GoRouter appRouter = GoRouter(
           planCode: args['planCode'] ?? 'pro',
           planPrice: args['planPrice'] ?? 15000.0,
         );
+      },
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: '/operations',
+      builder: (context, state) => const OperationsHubScreen(),
+    ),
+    GoRoute(
+      path: '/operations/form',
+      builder: (context, state) {
+        final Map<String, dynamic> args = state.extra as Map<String, dynamic>? ?? {};
+        return OperationFormScreen(
+          templateCode: args['templateCode'] ?? 'sale_cash',
+        );
+      },
+    ),
+    GoRoute(
+      path: '/operations/summary',
+      builder: (context, state) {
+        final Map<String, dynamic> args = state.extra as Map<String, dynamic>? ?? {};
+        return OperationSummaryScreen(summaryData: args);
       },
     ),
   ],

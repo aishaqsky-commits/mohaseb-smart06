@@ -3,33 +3,47 @@ import '../../../../core/theme/color_tokens.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../smart_command/presentation/widgets/smart_command_sheet.dart';
+import '../../../operations/presentation/widgets/quick_operation_picker.dart';
 import 'package:go_router/go_router.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _currentNavIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: _buildAppDrawer(context),
       appBar: AppBar(
         title: const Text('بقالة الأمل'),
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.point_of_sale, color: ColorTokens.positive),
-            onPressed: () {
-              context.push('/pos');
-            },
+            tooltip: 'نقطة البيع (POS)',
+            onPressed: () => context.push('/pos'),
           ),
           IconButton(
-            icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+            icon: const Icon(Icons.settings_outlined),
+            tooltip: 'الإعدادات',
+            onPressed: () => context.push('/settings'),
           ),
           IconButton(
             icon: const Icon(Icons.workspace_premium, color: Colors.orange),
+            tooltip: 'الباقة والترقية',
             onPressed: () {
               context.push('/checkout', extra: {'planCode': 'pro', 'planPrice': 15000.0});
             },
@@ -39,7 +53,7 @@ class DashboardScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const OfflineBanner(isOffline: true), // Simulation for now
+            const OfflineBanner(isOffline: true),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(AppSpacing.lg),
@@ -68,11 +82,21 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.xxl),
-                  Text(
-                    'أكثر العمليات استخداماً',
-                    style: Theme.of(context).textTheme.titleLarge,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'العمليات السريعة',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      TextButton.icon(
+                        onPressed: () => context.push('/operations'),
+                        icon: const Icon(Icons.apps, size: 18),
+                        label: const Text('كافة العمليات (20+)'),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.sm),
                   _buildQuickActionsGrid(context),
                 ],
               ),
@@ -82,13 +106,22 @@ class DashboardScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
+        currentIndex: _currentNavIndex,
         selectedItemColor: ColorTokens.neutralInfo,
         unselectedItemColor: Colors.grey,
         onTap: (index) {
-          if (index == 1) context.push('/contacts');
-          if (index == 2) context.push('/inventory');
-          if (index == 3) context.push('/reports');
+          setState(() => _currentNavIndex = index);
+          if (index == 0) {
+            // Already on Dashboard
+          } else if (index == 1) {
+            context.push('/contacts');
+          } else if (index == 2) {
+            context.push('/inventory');
+          } else if (index == 3) {
+            context.push('/reports');
+          } else if (index == 4) {
+            context.push('/settings');
+          }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
@@ -98,14 +131,160 @@ class DashboardScreen extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'إعدادات'),
         ],
       ),
-      // AI Command Bar Placeholder
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => SmartCommandSheet.show(context),
         icon: const Icon(Icons.mic),
-        label: const Text('اكتب أو تكلّم...'),
+        label: const Text('اكتب أو تكلّم... (أمر ذكي)'),
         backgroundColor: ColorTokens.neutralInfo,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _buildAppDrawer(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              color: ColorTokens.neutralInfo.withValues(alpha: 0.08),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: ColorTokens.neutralInfo,
+                        foregroundColor: Colors.white,
+                        child: const Text('👑', style: TextStyle(fontSize: 20)),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text('بقالة الأمل', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                          Text('أبو صالح (التاجر المالك)', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: Colors.green.shade200),
+                    ),
+                    child: const Text(
+                      '🟢 نمط العمل دون اتصال (Local-First جاهز)',
+                      style: TextStyle(fontSize: 11, color: Colors.green, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.home, color: ColorTokens.neutralInfo),
+                    title: const Text('الرئيسية'),
+                    onTap: () => Navigator.pop(context),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.point_of_sale, color: ColorTokens.positive),
+                    title: const Text('نقطة البيع السريعة (POS)'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/pos');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.apps, color: Colors.indigo),
+                    title: const Text('دليل كافة العمليات (20+ عملية)'),
+                    subtitle: const Text('بيع، شراء، تحصيل، سداد، تالف، مصروفات...'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/operations');
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.contacts, color: ColorTokens.neutralInfo),
+                    title: const Text('دليل جهات الاتصال'),
+                    subtitle: const Text('عملاء، موردون، موظفون'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/contacts');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.inventory_2, color: Colors.teal),
+                    title: const Text('إدارة المخزون والأصناف'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/inventory');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.warehouse, color: Colors.deepOrange),
+                    title: const Text('الفروع والمستودعات والتحويلات'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/inventory/warehouses');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.credit_card, color: Colors.deepPurple),
+                    title: const Text('إدارة الشيكات البنكية'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/checks');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.currency_exchange, color: Colors.teal),
+                    title: const Text('العملات وأسعار الصرف'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/currencies');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.bar_chart, color: ColorTokens.positive),
+                    title: const Text('التقارير المالية وقائمة الدخل'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/reports');
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.api, color: Colors.blueGrey),
+                    title: const Text('مفاتيح الربط الخارجي API'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/api-keys');
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.settings, color: Colors.grey),
+                    title: const Text('الإعدادات والصلاحيات والذكاء الاصطناعي'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      context.push('/settings');
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -197,14 +376,66 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _buildQuickActionsGrid(BuildContext context) {
     final actions = [
-      {'label': 'بعت', 'icon': '🛒', 'color': ColorTokens.positive, 'route': ''},
-      {'label': 'اشتريت', 'icon': '💵', 'color': ColorTokens.negative, 'route': ''},
-      {'label': 'تحصيل', 'icon': '📥', 'color': ColorTokens.neutralInfo, 'route': ''},
-      {'label': 'سداد', 'icon': '📤', 'color': ColorTokens.warning, 'route': ''},
-      {'label': 'شيكات', 'icon': '💳', 'color': Colors.deepPurple, 'route': '/checks'},
-      {'label': 'العملات', 'icon': '💱', 'color': Colors.teal, 'route': '/currencies'},
-      {'label': 'مصروف', 'icon': '🧾', 'color': Colors.deepOrange, 'route': ''},
-      {'label': 'الربط API', 'icon': '🔗', 'color': Colors.blueGrey, 'route': '/api-keys'},
+      {
+        'label': 'بعت',
+        'icon': '🛒',
+        'color': ColorTokens.positive,
+        'action': () => QuickOperationPicker.show(context, category: 'sale'),
+      },
+      {
+        'label': 'اشتريت',
+        'icon': '💵',
+        'color': ColorTokens.negative,
+        'action': () => QuickOperationPicker.show(context, category: 'purchase'),
+      },
+      {
+        'label': 'تحصيل',
+        'icon': '📥',
+        'color': ColorTokens.neutralInfo,
+        'action': () => QuickOperationPicker.show(context, category: 'settlement'),
+      },
+      {
+        'label': 'سداد',
+        'icon': '📤',
+        'color': ColorTokens.warning,
+        'action': () => QuickOperationPicker.show(context, category: 'settlement'),
+      },
+      {
+        'label': 'تالف',
+        'icon': '🗑️',
+        'color': Colors.brown,
+        'action': () => QuickOperationPicker.show(context, category: 'damage'),
+      },
+      {
+        'label': 'مصروف',
+        'icon': '🧾',
+        'color': Colors.deepOrange,
+        'action': () => QuickOperationPicker.show(context, category: 'expense'),
+      },
+      {
+        'label': 'شيكات',
+        'icon': '💳',
+        'color': Colors.deepPurple,
+        'action': () => context.push('/checks'),
+      },
+      {
+        'label': 'العملات',
+        'icon': '💱',
+        'color': Colors.teal,
+        'action': () => context.push('/currencies'),
+      },
+      {
+        'label': 'المالك',
+        'icon': '💼',
+        'color': Colors.blueGrey,
+        'action': () => QuickOperationPicker.show(context, category: 'owner'),
+      },
+      {
+        'label': 'المزيد ➕',
+        'icon': '📋',
+        'color': Colors.indigo,
+        'action': () => context.push('/operations'),
+      },
     ];
 
     return GridView.builder(
@@ -212,20 +443,15 @@ class DashboardScreen extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: actions.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: AppSpacing.sm,
+        crossAxisCount: 5,
+        crossAxisSpacing: AppSpacing.xs,
         mainAxisSpacing: AppSpacing.sm,
-        childAspectRatio: 0.85,
+        childAspectRatio: 0.82,
       ),
       itemBuilder: (context, index) {
         final action = actions[index];
         return InkWell(
-          onTap: () {
-            final route = action['route'] as String;
-            if (route.isNotEmpty) {
-              context.push(route);
-            }
-          },
+          onTap: action['action'] as VoidCallback,
           borderRadius: BorderRadius.circular(12),
           child: Container(
             decoration: BoxDecoration(
@@ -235,13 +461,13 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(action['icon'] as String, style: const TextStyle(fontSize: 28)),
+                Text(action['icon'] as String, style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 4),
                 Text(
                   action['label'] as String,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                        fontSize: 11,
                       ),
                   textAlign: TextAlign.center,
                 ),

@@ -115,7 +115,7 @@ class _IncomeStatementScreenState extends State<IncomeStatementScreen> {
               ListTile(
                 title: const Text('الإجمالي', style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: Text(
-                  '${total.toStringAsFixed(0)}',
+                  total.toStringAsFixed(0),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: color),
                 ),
               ),
