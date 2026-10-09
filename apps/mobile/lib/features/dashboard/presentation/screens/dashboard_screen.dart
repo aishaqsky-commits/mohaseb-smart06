@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/color_tokens.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/offline_banner.dart';
+import '../../../smart_command/presentation/widgets/smart_command_sheet.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -85,7 +86,7 @@ class DashboardScreen extends StatelessWidget {
       ),
       // AI Command Bar Placeholder
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () => SmartCommandSheet.show(context),
         icon: const Icon(Icons.mic),
         label: const Text('اكتب أو تكلّم...'),
         backgroundColor: ColorTokens.neutralInfo,
