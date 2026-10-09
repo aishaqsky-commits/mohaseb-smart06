@@ -83,6 +83,26 @@ export class JournalEntry {
   }
 
   /**
+   * إعادة بناء قيد من التخزين (يحافظ على ID الأصلي، حالة العكس، وتاريخ الإنشاء).
+   */
+  static reconstruct(props: {
+    id: string;
+    tenantId: string;
+    entryDate: Date;
+    descriptionSimple: string;
+    sourceType: JournalEntrySourceType;
+    sourceTransactionId: string | null;
+    baseCurrencyCode: string;
+    lines: JournalLine[];
+    isReversed: boolean;
+    reversalOfEntryId: string | null;
+    createdAt: Date;
+  }): JournalEntry {
+    JournalEntry.assertBalanced(props.lines, props.baseCurrencyCode);
+    return new JournalEntry(props);
+  }
+
+  /**
    * القاعدة الأهم في كامل النظام المحاسبي.
    * تُحسب دائمًا بعملة الأساس (baseAmount) بغض النظر عن عملة كل سطر على حدة.
    */

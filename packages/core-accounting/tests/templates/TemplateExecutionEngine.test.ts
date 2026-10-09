@@ -138,8 +138,8 @@ describe("TemplateExecutionEngine - اختبارات تكامل شاملة عب�
   it("[inventory_damage] Fuzz: 200 توزيع عشوائي عبر المحرك الفعلي يبقى متوازنًا دومًا", async () => {
     for (let i = 0; i < 200; i++) {
       const total = (Math.floor(Math.random() * 100000) / 100).toFixed(2);
-      const p1 = Math.random() * 100;
-      const p2 = Math.random() * (100 - p1);
+      const p1 = Number((Math.random() * 50).toFixed(4));
+      const p2 = Number((Math.random() * (100 - p1)).toFixed(4));
       // النسبة الثالثة تُحسب بالمكمّل العشري الدقيق (Decimal) لتفادي أخطاء IEEE-754
       // التي تجعل sum(percentages) != 100 فيتم رفض التحقق (سلوك صحيح من المدقق).
       const p3 = new Decimal(100).minus(new Decimal(p1)).minus(new Decimal(p2)).toNumber();

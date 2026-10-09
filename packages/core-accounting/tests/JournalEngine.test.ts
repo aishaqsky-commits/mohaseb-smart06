@@ -189,5 +189,54 @@ describe("JournalEngine - اختبارات التكامل الكاملة", () =>
       })
     ).rejects.toThrow(/حساب تجميعي/);
   });
+
+  // ===== اختبار حفظ وإعادة بناء القيد من قاعدة البيانات بالشكل الصحيح =====
+  it("يحفظ القيد ويعيد بنائه بنفس الـ ID والبيانات من SQLite", async () => {
+    const entry = await engine.postEntry({
+      tenantId: TENANT_ID,
+      entryDate: new Date("2025-01-15"),
+      descriptionSimple: "قيد للتخزين والاسترجاع",
+      sourceType: "sale",
+      baseCurrencyCode: "YER",
+      lines: [
+        { accountCode: "1101", side: "debit", amount: "25000", currencyCode: "YER", exchangeRateUsed: "1" },
+        { accountCode: "4150", side: "credit", amount: "25000", currencyCode: "YER", exchangeRateUsed: "1" },
+      ],
+    });
+
+    const journalRepo = new SqliteJournalRepository(db);
+    const fetched = await journalRepo.findById(TENANT_ID, entry.id);
+
+    expect(fetched).not.toBeNull();
+    expect(fetched!.id).toBe(entry.id);
+    expect(fetched!.tenantId).toBe(TENANT_ID);
+    expect(fetched!.descriptionSimple).toBe("قيد للتخزين والاسترجاع");
+    expect(fetched!.isReversed).toBe(false);
+    expect(fetched!.lines).toHaveLength(2);
+  });
+
+  // ===== اختبار عكس القيد وعلامة العكس =====
+  it("يعكس القيد بنجاح ويولّد قيدًا عكسيًا ويحدّث القيد الأصلي", async () => {
+    const entry = await engine.postEntry({
+      tenantId: TENANT_ID,
+      entryDate: new Date("2025-01-15"),
+      descriptionSimple: "قيد مبيعات للعكس",
+      sourceType: "sale",
+      baseCurrencyCode: "YER",
+      lines: [
+        { accountCode: "1101", side: "debit", amount: "30000", currencyCode: "YER", exchangeRateUsed: "1" },
+        { accountCode: "4150", side: "credit", amount: "30000", currencyCode: "YER", exchangeRateUsed: "1" },
+      ],
+    });
+
+    const reversal = await engine.reverseEntry(TENANT_ID, entry.id, "خطأ في المبلغ");
+
+    expect(reversal.reversalOfEntryId).toBe(entry.id);
+    expect(reversal.sourceType).toBe("system_adjustment");
+
+    const journalRepo = new SqliteJournalRepository(db);
+    const originalFetched = await journalRepo.findById(TENANT_ID, entry.id);
+    expect(originalFetched!.isReversed).toBe(true);
+  });
 });
 // ملاحظة: اختبار Fuzz لقاعدة التقريب (القسم 3.3 من تصميم القوالب) موجود في tests/golden-cases/rounding.fuzz.test.ts

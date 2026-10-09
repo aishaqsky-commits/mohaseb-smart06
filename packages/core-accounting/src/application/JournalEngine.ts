@@ -8,6 +8,7 @@ import { AccountRepository } from "../domain/ports/AccountRepository";
 import { JournalRepository } from "../domain/ports/JournalRepository";
 import {
   AccountNotFoundError,
+  EntryNotFoundError,
   FiscalPeriodClosedError,
   EntryAlreadyReversedError,
 } from "../domain/errors/AccountingErrors";
@@ -105,7 +106,7 @@ export class JournalEngine {
   ): Promise<JournalEntry> {
     const original = await this.journalRepo.findById(tenantId, entryId);
     if (!original) {
-      throw new AccountNotFoundError(entryId);
+      throw new EntryNotFoundError(entryId);
     }
     if (original.isReversed) {
       throw new EntryAlreadyReversedError(entryId);

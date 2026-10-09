@@ -21,7 +21,8 @@ export class Money {
   public readonly currencyCode: string;
 
   // عدد الخانات العشرية المعتمد للعرض والتخزين النهائي (قابل للتهيئة لاحقًا حسب العملة)
-  private static readonly DISPLAY_DECIMALS = 4;
+  public static readonly STORAGE_DECIMALS = 4;
+  public static readonly DISPLAY_DECIMALS = 4;
 
   private constructor(amount: Decimal, currencyCode: string) {
     if (!currencyCode || currencyCode.length !== 3) {

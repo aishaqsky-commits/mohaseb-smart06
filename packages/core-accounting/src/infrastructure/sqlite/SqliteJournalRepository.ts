@@ -108,16 +108,8 @@ export class SqliteJournalRepository implements JournalRepository {
       })
     );
 
-    return (JournalEntry as any).reconstructFromPersistence
-      ? (JournalEntry as any).reconstructFromPersistence({ ...entryRow, lines })
-      : this.buildEntryFromRow(entryRow, lines);
-  }
-
-  private buildEntryFromRow(entryRow: any, lines: JournalLine[]): JournalEntry {
-    // ملاحظة هندسية: في بيئة الإنتاج تُضاف دالة JournalEntry.reconstruct()
-    // مخصصة لإعادة البناء من التخزين دون إعادة تنفيذ التحقق من التوازن
-    // (التوازن مضمون مسبقًا لأنه لم يُقبل إلا بعد التحقق عند الإنشاء الأصلي).
-    return JournalEntry.create({
+    return JournalEntry.reconstruct({
+      id: entryRow.id,
       tenantId: entryRow.tenant_id,
       entryDate: new Date(entryRow.entry_date),
       descriptionSimple: entryRow.description_simple,
@@ -125,6 +117,9 @@ export class SqliteJournalRepository implements JournalRepository {
       sourceTransactionId: entryRow.source_transaction_id,
       baseCurrencyCode: entryRow.base_currency_code,
       lines,
+      isReversed: Boolean(entryRow.is_reversed),
+      reversalOfEntryId: entryRow.reversal_of_entry_id,
+      createdAt: new Date(entryRow.created_at),
     });
   }
 

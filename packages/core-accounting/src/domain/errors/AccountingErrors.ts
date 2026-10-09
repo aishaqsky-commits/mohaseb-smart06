@@ -23,6 +23,13 @@ export class AccountNotFoundError extends Error {
   }
 }
 
+export class EntryNotFoundError extends Error {
+  constructor(entryId: string) {
+    super(`القيد المحاسبي غير موجود: ${entryId}`);
+    this.name = "EntryNotFoundError";
+  }
+}
+
 export class EntryAlreadyReversedError extends Error {
   constructor(entryId: string) {
     super(`القيد ${entryId} معكوس مسبقًا، لا يمكن عكسه مرة أخرى`);
