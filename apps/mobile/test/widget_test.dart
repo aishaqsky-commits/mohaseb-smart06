@@ -6,8 +6,8 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MohasebSmartApp());
 
-    // Verify that the title is present.
-    expect(find.text('المحاسب الذكي - الرئيسية'), findsOneWidget);
-    expect(find.text('أهلاً بك في منصة المحاسب الذكي'), findsOneWidget);
+    // Verify that the title and some key texts are present.
+    expect(find.text('بقالة الأمل'), findsOneWidget);
+    expect(find.text('ربحك اليوم'), findsOneWidget);
   });
 }

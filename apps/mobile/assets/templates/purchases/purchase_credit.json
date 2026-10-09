@@ -1,0 +1,77 @@
+{
+  "template_code": "purchase_credit",
+  "template_version": 1,
+  "scope": [
+    "retail",
+    "clinic",
+    "workshop",
+    "service_office"
+  ],
+  "category": "purchases",
+  "ui": {
+    "button_group_ar": "اشتريت",
+    "display_name_ar": "شراء آجل",
+    "icon": "cart_clock",
+    "description_ar": "اشتريت بضاعة وما دفعت، صارت دين عليك للمورد",
+    "sort_order": 2
+  },
+  "payment_mode": "credit",
+  "requires_contact": {
+    "required": true,
+    "type": "supplier",
+    "allow_quick_add": true
+  },
+  "inventory_effect": "increase",
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "total_amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "supplier_id",
+      "type": "contact_picker",
+      "label_ar": "المورد",
+      "required": true
+    },
+    {
+      "key": "due_date",
+      "type": "date",
+      "label_ar": "تاريخ السداد المتوقع",
+      "required": false
+    },
+    {
+      "key": "note",
+      "type": "text",
+      "label_ar": "ملاحظة",
+      "required": false
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "1310",
+      "side": "debit",
+      "amount_formula": "{{total_amount}}"
+    },
+    {
+      "account_code_ref": "2110",
+      "side": "credit",
+      "amount_formula": "{{total_amount}}",
+      "contact_ref": "{{supplier_id}}"
+    }
+  ]
+}

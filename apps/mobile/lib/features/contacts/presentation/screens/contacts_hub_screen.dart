@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/color_tokens.dart';
+import '../../data/repositories/contact_repository.dart';
 
 class ContactsHubScreen extends StatefulWidget {
   const ContactsHubScreen({super.key});
@@ -11,25 +12,39 @@ class ContactsHubScreen extends StatefulWidget {
 
 class _ContactsHubScreenState extends State<ContactsHubScreen> {
   int _selectedTabIndex = 0;
-
   final List<String> _tabs = ['عملاء', 'موردون', 'موظفون', 'أخرى'];
 
-  final List<Map<String, dynamic>> _dummyContacts = [
-    {
-      'name': 'أحمد سالم',
-      'type': 'عميل',
-      'balance': 25000.0,
-      'isDebit': true, // عليه
-      'lastAction': 'منذ يومين',
-    },
-    {
-      'name': 'محل الأمانة',
-      'type': 'مورد',
-      'balance': 0.0,
-      'isDebit': false,
-      'lastAction': 'متزن',
-    },
-  ];
+  final ContactRepository _repository = ContactRepository();
+  List<Map<String, dynamic>> _contacts = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadContacts();
+  }
+
+  Future<void> _loadContacts() async {
+    setState(() => _isLoading = true);
+    try {
+      final data = await _repository.getAllContacts();
+      setState(() {
+        _contacts = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _filterContacts(String query) async {
+    setState(() => _isLoading = true);
+    final data = await _repository.searchContacts(query);
+    setState(() {
+      _contacts = data;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +63,19 @@ class _ContactsHubScreenState extends State<ContactsHubScreen> {
           _buildSegmentedTabs(),
           _buildSearchAndFilter(),
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              itemCount: _dummyContacts.length,
-              separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-              itemBuilder: (context, index) {
-                final contact = _dummyContacts[index];
-                return _buildContactCard(contact);
-              },
-            ),
+            child: _isLoading 
+              ? const Center(child: CircularProgressIndicator())
+              : _contacts.isEmpty 
+                  ? const Center(child: Text('لا توجد جهات اتصال'))
+                  : ListView.separated(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      itemCount: _contacts.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+                      itemBuilder: (context, index) {
+                        final contact = _contacts[index];
+                        return _buildContactCard(contact);
+                      },
+                    ),
           ),
         ],
       ),
@@ -99,6 +118,7 @@ class _ContactsHubScreenState extends State<ContactsHubScreen> {
         children: [
           Expanded(
             child: TextField(
+              onChanged: _filterContacts,
               decoration: InputDecoration(
                 hintText: 'ابحث بالاسم أو الهاتف',
                 prefixIcon: const Icon(Icons.search),
@@ -127,8 +147,9 @@ class _ContactsHubScreenState extends State<ContactsHubScreen> {
   }
 
   Widget _buildContactCard(Map<String, dynamic> contact) {
-    final bool isDebit = contact['isDebit'];
-    final double balance = contact['balance'];
+    final double balance = (contact['balance'] as num?)?.toDouble() ?? 0.0;
+    // For simplicity: positive balance means they owe us (debit), negative means we owe them.
+    final bool isDebit = balance > 0;
     final bool isZero = balance == 0;
 
     Color balanceColor = Colors.grey;

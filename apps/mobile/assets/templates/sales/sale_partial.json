@@ -1,0 +1,86 @@
+{
+  "template_code": "sale_partial",
+  "template_version": 1,
+  "scope": [
+    "retail",
+    "workshop"
+  ],
+  "category": "sales",
+  "ui": {
+    "button_group_ar": "بعت",
+    "display_name_ar": "بيع جزئي",
+    "icon": "cart_split",
+    "description_ar": "قبضت جزء والباقي صار دين على العميل",
+    "sort_order": 3
+  },
+  "payment_mode": "partial",
+  "requires_contact": {
+    "required": true,
+    "type": "customer",
+    "allow_quick_add": true
+  },
+  "inventory_effect": "decrease",
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "total_amount",
+      "type": "amount",
+      "label_ar": "المبلغ الكلي",
+      "required": true
+    },
+    {
+      "key": "received_amount",
+      "type": "amount",
+      "label_ar": "قبضت الآن كم؟",
+      "required": true,
+      "validation": "received_amount <= total_amount"
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "received_to_account",
+      "type": "select",
+      "label_ar": "استلمت في؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110",
+        "1120"
+      ]
+    },
+    {
+      "key": "customer_id",
+      "type": "contact_picker",
+      "label_ar": "العميل",
+      "required": true
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "{{received_to_account}}",
+      "side": "debit",
+      "amount_formula": "{{received_amount}}"
+    },
+    {
+      "account_code_ref": "1210",
+      "side": "debit",
+      "amount_formula": "remaining({{total_amount}},{{received_amount}})",
+      "contact_ref": "{{customer_id}}"
+    },
+    {
+      "account_code_ref": "4150",
+      "side": "credit",
+      "amount_formula": "{{total_amount}}"
+    }
+  ]
+}

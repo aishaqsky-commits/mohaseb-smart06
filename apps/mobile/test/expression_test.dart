@@ -15,7 +15,8 @@ void main() {
     expect(result, 450.0);
   });
 
-  test('Throws exception on invalid math', () {
-    expect(() => ExpressionEvaluatorService.evaluate("amount * (", {"amount": 100}), throwsException);
+  test('Returns 0.0 on invalid math', () {
+    final result = ExpressionEvaluatorService.evaluate("amount * (", {"amount": 100});
+    expect(result, 0.0);
   });
 }

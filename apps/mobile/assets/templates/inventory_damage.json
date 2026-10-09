@@ -1,0 +1,79 @@
+{
+  "template_code": "inventory_damage",
+  "template_version": 1,
+  "scope": [
+    "retail",
+    "workshop",
+    "clinic",
+    "service_office"
+  ],
+  "category": "damage",
+  "ui": {
+    "button_group_ar": "تالف",
+    "display_name_ar": "بضاعة تالفة",
+    "icon": "broken_box",
+    "description_ar": "سجّل بضاعة تلفت أو انتهت صلاحيتها ووزّع قيمتها",
+    "sort_order": 1
+  },
+  "requires_contact": {
+    "required": false,
+    "type": null
+  },
+  "inventory_effect": "decrease",
+  "allow_distribution": true,
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "items",
+      "type": "item_picker",
+      "label_ar": "الأصناف التالفة",
+      "required": true
+    },
+    {
+      "key": "total_amount",
+      "type": "amount",
+      "label_ar": "القيمة الإجمالية",
+      "required": true
+    },
+    {
+      "key": "reason",
+      "type": "select",
+      "label_ar": "السبب",
+      "required": true,
+      "options": [
+        "expired",
+        "broken",
+        "theft",
+        "sample_gift",
+        "other"
+      ]
+    },
+    {
+      "key": "distribution",
+      "type": "distribution_table",
+      "label_ar": "على من توزّع الخسارة؟",
+      "required": true,
+      "validation": "sum(distribution[].percentage) == 100"
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "map_target_to_account({{distribution[i].target_type}})",
+      "side": "debit",
+      "amount_formula": "apportion({{total_amount}}, {{distribution[i].percentage}})",
+      "contact_ref": "{{distribution[i].contact_id}}",
+      "repeat_for": "distribution"
+    },
+    {
+      "account_code_ref": "1310",
+      "side": "credit",
+      "amount_formula": "{{total_amount}}"
+    }
+  ]
+}

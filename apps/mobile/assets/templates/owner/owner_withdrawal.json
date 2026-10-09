@@ -1,0 +1,58 @@
+{
+  "template_code": "owner_withdrawal",
+  "template_version": 1,
+  "scope": [
+    "core"
+  ],
+  "category": "owner",
+  "ui": {
+    "button_group_ar": "المالك",
+    "display_name_ar": "مسحوبات المالك",
+    "icon": "wallet_out",
+    "description_ar": "سحبت فلوس من المحل لنفسك",
+    "sort_order": 1
+  },
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "paid_from_account",
+      "type": "select",
+      "label_ar": "من وين سحبت؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110"
+      ]
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "3200",
+      "side": "debit",
+      "amount_formula": "{{amount}}"
+    },
+    {
+      "account_code_ref": "{{paid_from_account}}",
+      "side": "credit",
+      "amount_formula": "{{amount}}"
+    }
+  ]
+}

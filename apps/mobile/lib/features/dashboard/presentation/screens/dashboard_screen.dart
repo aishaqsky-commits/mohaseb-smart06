@@ -3,6 +3,7 @@ import '../../../../core/theme/color_tokens.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/offline_banner.dart';
 import '../../../smart_command/presentation/widgets/smart_command_sheet.dart';
+import 'package:go_router/go_router.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -22,8 +23,10 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {},
+            icon: const Icon(Icons.workspace_premium, color: Colors.orange),
+            onPressed: () {
+              context.push('/checkout', extra: {'planCode': 'pro', 'planPrice': 15000.0});
+            },
           ),
         ],
       ),
@@ -76,6 +79,10 @@ class DashboardScreen extends StatelessWidget {
         currentIndex: 0,
         selectedItemColor: ColorTokens.neutralInfo,
         unselectedItemColor: Colors.grey,
+        onTap: (index) {
+          if (index == 1) context.push('/contacts');
+          if (index == 2) context.push('/inventory');
+        },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'الرئيسية'),
           BottomNavigationBarItem(icon: Icon(Icons.contacts), label: 'جهات'),

@@ -1,0 +1,6 @@
+{
+  "name": "@platform/templates",
+  "version": "1.0.0",
+  "description": "Standard transaction templates for merchant accounting platform",
+  "main": "schema/template.schema.json"
+}

@@ -1,0 +1,57 @@
+{
+  "template_code": "job_open",
+  "template_version": 1,
+  "scope": [
+    "clinic",
+    "workshop",
+    "law_office",
+    "service_office"
+  ],
+  "category": "services",
+  "ui": {
+    "button_group_ar": "فتح ملف",
+    "display_name_ar": "فتح ملف/زيارة جديدة",
+    "icon": "folder_add",
+    "description_ar": "سجّل مريض جديد أو أمر صيانة أو قضية أو معاملة",
+    "sort_order": 1
+  },
+  "is_financial": false,
+  "requires_contact": {
+    "required": true,
+    "type": "customer",
+    "allow_quick_add": true
+  },
+  "fields": [
+    {
+      "key": "job_type",
+      "type": "select",
+      "label_ar": "نوع الملف",
+      "required": true,
+      "options": [
+        "visit",
+        "work_order",
+        "case",
+        "service_request"
+      ]
+    },
+    {
+      "key": "contact_id",
+      "type": "contact_picker",
+      "label_ar": "المريض/العميل/الموكل",
+      "required": true
+    },
+    {
+      "key": "assigned_employee_id",
+      "type": "contact_picker",
+      "label_ar": "الطبيب/الفني المسؤول",
+      "required": false
+    },
+    {
+      "key": "title",
+      "type": "text",
+      "label_ar": "وصف مختصر",
+      "required": false
+    }
+  ],
+  "entity_action": "create_job_record"
+}

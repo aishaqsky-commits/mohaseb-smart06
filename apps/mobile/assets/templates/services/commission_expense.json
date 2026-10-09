@@ -1,0 +1,109 @@
+{
+  "template_code": "commission_expense",
+  "template_version": 1,
+  "scope": [
+    "clinic",
+    "workshop"
+  ],
+  "category": "services",
+  "ui": {
+    "button_group_ar": "عمولات",
+    "display_name_ar": "عمولة طبيب/فني",
+    "icon": "percent",
+    "description_ar": "حصة الطبيب أو الفني من الإيراد",
+    "sort_order": 6
+  },
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "job_id",
+      "type": "select",
+      "label_ar": "مرتبط بملف؟",
+      "required": false,
+      "options_source": "open_jobs()"
+    },
+    {
+      "key": "commission_expense_account",
+      "type": "select",
+      "label_ar": "نوع العمولة",
+      "required": true,
+      "options": [
+        "5220",
+        "5230"
+      ]
+    },
+    {
+      "key": "amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "pay_now",
+      "type": "toggle",
+      "label_ar": "دفعتها الآن؟",
+      "required": true,
+      "default": false
+    },
+    {
+      "key": "paid_from_account",
+      "type": "select",
+      "label_ar": "دفعت من وين؟",
+      "required": false,
+      "visible_when": "pay_now == true",
+      "options": [
+        "1101",
+        "1110"
+      ]
+    },
+    {
+      "key": "accrued_account",
+      "type": "select",
+      "label_ar": "حساب الاستحقاق",
+      "required": false,
+      "visible_when": "pay_now == false",
+      "options": [
+        "2620",
+        "2630"
+      ]
+    },
+    {
+      "key": "employee_id",
+      "type": "contact_picker",
+      "label_ar": "الطبيب/الفني",
+      "required": true
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "{{commission_expense_account}}",
+      "side": "debit",
+      "amount_formula": "{{amount}}"
+    },
+    {
+      "account_code_ref": "{{paid_from_account}}",
+      "side": "credit",
+      "amount_formula": "{{amount}}",
+      "condition": "pay_now == true"
+    },
+    {
+      "account_code_ref": "{{accrued_account}}",
+      "side": "credit",
+      "amount_formula": "{{amount}}",
+      "contact_ref": "{{employee_id}}",
+      "condition": "pay_now == false"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/color_tokens.dart';
+import '../../data/repositories/item_repository.dart';
 
 class InventoryListScreen extends StatefulWidget {
   const InventoryListScreen({super.key});
@@ -10,22 +11,37 @@ class InventoryListScreen extends StatefulWidget {
 }
 
 class _InventoryListScreenState extends State<InventoryListScreen> {
-  final List<Map<String, dynamic>> _dummyItems = [
-    {
-      'name': 'بيبسي كبير',
-      'quantity': 45,
-      'value': 5400.0,
-      'isLowStock': true,
-      'isExpired': false,
-    },
-    {
-      'name': 'باراسيتامول 500مل',
-      'quantity': 12,
-      'value': 1020.0,
-      'isLowStock': false,
-      'isExpired': true,
-    },
-  ];
+  final ItemRepository _repository = ItemRepository();
+  List<Map<String, dynamic>> _items = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    setState(() => _isLoading = true);
+    try {
+      final data = await _repository.getAllItems();
+      setState(() {
+        _items = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _filterItems(String query) async {
+    setState(() => _isLoading = true);
+    final data = await _repository.searchItems(query);
+    setState(() {
+      _items = data;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +59,19 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
         children: [
           _buildSearchAndFilters(),
           Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              itemCount: _dummyItems.length,
-              separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-              itemBuilder: (context, index) {
-                final item = _dummyItems[index];
-                return _buildItemCard(item);
-              },
-            ),
+            child: _isLoading 
+              ? const Center(child: CircularProgressIndicator())
+              : _items.isEmpty 
+                  ? const Center(child: Text('لا يوجد أصناف في المخزون'))
+                  : ListView.separated(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      itemCount: _items.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
+                      itemBuilder: (context, index) {
+                        final item = _items[index];
+                        return _buildItemCard(item);
+                      },
+                    ),
           ),
         ],
       ),
@@ -64,6 +84,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       child: Column(
         children: [
           TextField(
+            onChanged: _filterItems,
             decoration: InputDecoration(
               hintText: 'ابحث عن صنف',
               prefixIcon: const Icon(Icons.search),
@@ -101,6 +122,12 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
   }
 
   Widget _buildItemCard(Map<String, dynamic> item) {
+    final int quantity = (item['stock_quantity'] as num?)?.toInt() ?? 0;
+    final double cost = (item['average_cost'] as num?)?.toDouble() ?? 0.0;
+    final double value = quantity * cost;
+    final bool isLowStock = quantity < 10;
+    final bool isExpired = false; // Logic to check FEFO batches later
+
     return InkWell(
       onTap: () {
         // Navigate to Item Details
@@ -124,14 +151,14 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              item['name'],
+              item['name'] ?? 'بدون اسم',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
             const SizedBox(height: 4),
             Text(
-              'الكمية: ${item['quantity']} · القيمة: ${item['value'].toStringAsFixed(0)}',
+              'الكمية: $quantity · القيمة: ${value.toStringAsFixed(0)}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Colors.grey.shade700,
                   ),
@@ -139,12 +166,12 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                if (item['isLowStock'])
+                if (isLowStock)
                   _buildBadge('⚠ منخفض', ColorTokens.warning),
-                if (!item['isLowStock'] && !item['isExpired'])
+                if (!isLowStock && !isExpired)
                   _buildBadge('متوفر', ColorTokens.positive),
                 const SizedBox(width: AppSpacing.sm),
-                if (item['isExpired'])
+                if (isExpired)
                   _buildBadge('🔴 منتهي الصلاحية', ColorTokens.negative)
                 else
                   _buildBadge('🟢 صلاحية سليمة', ColorTokens.positive),

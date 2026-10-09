@@ -1,0 +1,126 @@
+{
+  "template_code": "opening_balance_wizard",
+  "template_version": 1,
+  "scope": [
+    "core"
+  ],
+  "category": "opening_balance",
+  "ui": {
+    "button_group_ar": "رصيد افتتاحي",
+    "display_name_ar": "تسجيل الأرصدة الافتتاحية",
+    "icon": "flag_start",
+    "description_ar": "سجّل كل أرصدتك وبضاعتك وديونك قبل بدء الاستخدام - مرة واحدة فقط",
+    "sort_order": 1
+  },
+  "one_time_only": true,
+  "fields": [
+    {
+      "key": "as_of_date",
+      "type": "date",
+      "label_ar": "تاريخ البداية",
+      "required": true
+    },
+    {
+      "key": "cash_balance",
+      "type": "amount",
+      "label_ar": "فلوس الصندوق",
+      "required": false,
+      "default": 0
+    },
+    {
+      "key": "bank_balance",
+      "type": "amount",
+      "label_ar": "رصيد البنك",
+      "required": false,
+      "default": 0
+    },
+    {
+      "key": "inventory_value",
+      "type": "amount",
+      "label_ar": "قيمة البضاعة الحالية",
+      "required": false,
+      "default": 0
+    },
+    {
+      "key": "fixed_assets_value",
+      "type": "amount",
+      "label_ar": "قيمة الأصول الثابتة",
+      "required": false,
+      "default": 0
+    },
+    {
+      "key": "customers",
+      "type": "distribution_table",
+      "label_ar": "عملاء لهم دين عندك",
+      "required": false
+    },
+    {
+      "key": "suppliers",
+      "type": "distribution_table",
+      "label_ar": "موردون لهم دين عندهم",
+      "required": false
+    },
+    {
+      "key": "loans_payable",
+      "type": "amount",
+      "label_ar": "قروض عليك",
+      "required": false,
+      "default": 0
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "1101",
+      "side": "debit",
+      "amount_formula": "{{cash_balance}}",
+      "condition": "cash_balance > 0"
+    },
+    {
+      "account_code_ref": "1110",
+      "side": "debit",
+      "amount_formula": "{{bank_balance}}",
+      "condition": "bank_balance > 0"
+    },
+    {
+      "account_code_ref": "1310",
+      "side": "debit",
+      "amount_formula": "{{inventory_value}}",
+      "condition": "inventory_value > 0"
+    },
+    {
+      "account_code_ref": "1510",
+      "side": "debit",
+      "amount_formula": "{{fixed_assets_value}}",
+      "condition": "fixed_assets_value > 0"
+    },
+    {
+      "account_code_ref": "1210",
+      "side": "debit",
+      "amount_formula": "{{customers[i].amount}}",
+      "contact_ref": "{{customers[i].contact_id}}",
+      "repeat_for": "customers"
+    },
+    {
+      "account_code_ref": "2110",
+      "side": "credit",
+      "amount_formula": "{{suppliers[i].amount}}",
+      "contact_ref": "{{suppliers[i].contact_id}}",
+      "repeat_for": "suppliers"
+    },
+    {
+      "account_code_ref": "2210",
+      "side": "credit",
+      "amount_formula": "{{loans_payable}}",
+      "condition": "loans_payable > 0"
+    },
+    {
+      "account_code_ref": "3100",
+      "side": "credit",
+      "amount_formula": "plug_balance()",
+      "memo_ar": "رأس المال (محسوب تلقائيًا)"
+    }
+  ],
+  "post_actions": [
+    "lock_template_after_first_use"
+  ]
+}
