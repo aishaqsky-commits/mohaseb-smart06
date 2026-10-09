@@ -21,4 +21,3 @@ export interface InventoryCostingPort {
 
   calculateItemsRevenueSum(items: Array<SaleItemInput & { lineTotal: string }>): Decimal;
 }
-TypeScript

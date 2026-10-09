@@ -190,5 +190,4 @@ describe("JournalEngine - اختبارات التكامل الكاملة", () =>
     ).rejects.toThrow(/حساب تجميعي/);
   });
 });
-اختبار Fuzz لقاعدة التقريب (القسم 3.3 من تصميم القوالب)
-TypeScript
+// ملاحظة: اختبار Fuzz لقاعدة التقريب (القسم 3.3 من تصميم القوالب) موجود في tests/golden-cases/rounding.fuzz.test.ts

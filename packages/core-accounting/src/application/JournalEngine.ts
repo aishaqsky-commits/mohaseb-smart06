@@ -18,8 +18,8 @@ export interface PostLineRequest {
   amount: string;             // نص لتفادي أخطاء float من الطبقات الخارجية (API/UI)
   currencyCode: string;
   exchangeRateUsed: string;
-  contactId?: string;
-  memoAr?: string;
+  contactId?: string | undefined;
+  memoAr?: string | undefined;
 }
 
 export interface PostJournalEntryRequest {
@@ -27,7 +27,7 @@ export interface PostJournalEntryRequest {
   entryDate: Date;
   descriptionSimple: string;
   sourceType: JournalEntrySourceType;
-  sourceTransactionId?: string;
+  sourceTransactionId?: string | undefined;
   baseCurrencyCode: string;
   lines: PostLineRequest[];
 }

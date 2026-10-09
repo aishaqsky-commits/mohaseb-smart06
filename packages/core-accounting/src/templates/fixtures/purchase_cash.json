@@ -1,4 +1,3 @@
-// src/templates/fixtures/purchase_cash.json
 {
   "template_code": "purchase_cash",
   "template_version": 1,
@@ -16,4 +15,3 @@
     { "account_code_ref": "{{paid_from_account}}", "side": "credit", "amount_formula": "{{total_amount}}" }
   ]
 }
-JSON

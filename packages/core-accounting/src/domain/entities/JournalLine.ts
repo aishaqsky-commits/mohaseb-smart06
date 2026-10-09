@@ -17,15 +17,15 @@ export interface CreateJournalLineInput {
 }
 
 export class JournalLine {
-  readonly id: string;
-  readonly accountId: string;
-  readonly side: EntrySide;
-  readonly amount: Money;              // بعملة السطر
-  readonly baseAmount: Money;          // محسوبة بعملة الأساس (مثبّتة وقت الإنشاء)
-  readonly exchangeRateUsed: string;
-  readonly contactId: string | null;
-  readonly memoAr: string | null;
-  readonly lineOrder: number;
+  readonly id!: string;
+  readonly accountId!: string;
+  readonly side!: EntrySide;
+  readonly amount!: Money;              // بعملة السطر
+  readonly baseAmount!: Money;          // محسوبة بعملة الأساس (مثبّتة وقت الإنشاء)
+  readonly exchangeRateUsed!: string;
+  readonly contactId!: string | null;
+  readonly memoAr!: string | null;
+  readonly lineOrder!: number;
 
   private constructor(props: {
     id: string;
@@ -41,7 +41,10 @@ export class JournalLine {
     if (props.amount.isZero() || props.amount.isNegative()) {
       throw new Error("مبلغ سطر القيد يجب أن يكون أكبر من صفر");
     }
-    Object.assign(this, props);
+    // تعيين الخصائص عبر مفاتيح معروفة لضمان توافق strictPropertyInitialization
+    for (const [k, v] of Object.entries(props)) {
+      (this as Record<string, unknown>)[k] = v;
+    }
   }
 
   static create(input: CreateJournalLineInput): JournalLine {

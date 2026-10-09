@@ -1,4 +1,3 @@
-// src/templates/fixtures/inventory_damage.json
 {
   "template_code": "inventory_damage",
   "template_version": 1,
@@ -24,4 +23,3 @@
     { "account_code_ref": "1310", "side": "credit", "amount_formula": "{{total_amount}}" }
   ]
 }
-JSON

@@ -14,7 +14,7 @@ export interface CreateJournalEntryInput {
   entryDate: Date;
   descriptionSimple: string;
   sourceType: JournalEntrySourceType;
-  sourceTransactionId?: string | null;
+  sourceTransactionId?: string | null | undefined;
   baseCurrencyCode: string;
   lines: JournalLine[];
 }
@@ -25,17 +25,17 @@ export interface CreateJournalEntryInput {
  * التحقق يحدث في المُنشئ الثابت (Factory) قبل استدعاء أي منشئ خاص.
  */
 export class JournalEntry {
-  readonly id: string;
-  readonly tenantId: string;
-  readonly entryDate: Date;
-  readonly descriptionSimple: string;
-  readonly sourceType: JournalEntrySourceType;
-  readonly sourceTransactionId: string | null;
-  readonly baseCurrencyCode: string;
-  readonly lines: ReadonlyArray<JournalLine>;
-  readonly isReversed: boolean;
-  readonly reversalOfEntryId: string | null;
-  readonly createdAt: Date;
+  readonly id!: string;
+  readonly tenantId!: string;
+  readonly entryDate!: Date;
+  readonly descriptionSimple!: string;
+  readonly sourceType!: JournalEntrySourceType;
+  readonly sourceTransactionId!: string | null;
+  readonly baseCurrencyCode!: string;
+  readonly lines!: ReadonlyArray<JournalLine>;
+  readonly isReversed!: boolean;
+  readonly reversalOfEntryId!: string | null;
+  readonly createdAt!: Date;
 
   private constructor(props: {
     id: string;
@@ -50,7 +50,10 @@ export class JournalEntry {
     reversalOfEntryId: string | null;
     createdAt: Date;
   }) {
-    Object.assign(this, props);
+    // تعيين الخصائص عبر مفاتيح معروفة لضمان توافق strictPropertyInitialization
+    for (const [k, v] of Object.entries(props)) {
+      (this as Record<string, unknown>)[k] = v;
+    }
   }
 
   /**

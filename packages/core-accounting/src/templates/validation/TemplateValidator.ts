@@ -5,7 +5,10 @@ import { TemplateDefinition, FieldDefinition } from "../types/TemplateDefinition
 
 export class TemplateValidationError extends Error {
   constructor(public readonly fieldErrors: Array<{ key: string; message: string }>) {
-    super(`فشل التحقق من ${fieldErrors.length} حقل/حقول`);
+    // رسالة مفصّلة قابلة للقراءة مباشرة على واجهة المستخدم (رسالة عربية لكل حقل)
+    super(
+      `فشل التحقق من ${fieldErrors.length} حقل/حقول: ${fieldErrors.map((e) => e.message).join(" | ")}`
+    );
     this.name = "TemplateValidationError";
   }
 }
