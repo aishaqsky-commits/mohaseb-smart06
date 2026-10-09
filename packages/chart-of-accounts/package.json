@@ -1,0 +1,6 @@
+{
+  "name": "@platform/chart-of-accounts",
+  "version": "1.0.0",
+  "description": "Chart of Accounts seed definitions and meta-schema for merchant accounting platform",
+  "main": "seeds/core.seed.json"
+}

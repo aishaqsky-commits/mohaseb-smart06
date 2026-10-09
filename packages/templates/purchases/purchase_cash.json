@@ -1,0 +1,96 @@
+{
+  "template_code": "purchase_cash",
+  "template_version": 1,
+  "scope": [
+    "retail",
+    "clinic",
+    "workshop",
+    "service_office"
+  ],
+  "category": "purchases",
+  "ui": {
+    "button_group_ar": "اشتريت",
+    "display_name_ar": "شراء نقدًا",
+    "icon": "cart_download",
+    "description_ar": "اشتريت بضاعة أو مستلزمات ودفعت الفلوس كاش",
+    "sort_order": 1
+  },
+  "payment_mode": "cash",
+  "requires_contact": {
+    "required": false,
+    "type": "supplier"
+  },
+  "inventory_effect": "increase",
+  "allow_quick_mode": true,
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "total_amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true,
+      "default": "{{tenant.base_currency}}"
+    },
+    {
+      "key": "paid_from_account",
+      "type": "select",
+      "label_ar": "دفعت من وين؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110",
+        "1120"
+      ]
+    },
+    {
+      "key": "supplier_id",
+      "type": "contact_picker",
+      "label_ar": "المورد (اختياري)",
+      "required": false
+    },
+    {
+      "key": "note",
+      "type": "text",
+      "label_ar": "ملاحظة",
+      "required": false
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "1310",
+      "side": "debit",
+      "amount_formula": "{{total_amount}}",
+      "memo_ar": "بضاعة مشتراة"
+    },
+    {
+      "account_code_ref": "{{paid_from_account}}",
+      "side": "credit",
+      "amount_formula": "{{total_amount}}",
+      "memo_ar": "دفعت كاش"
+    }
+  ],
+  "golden_test_cases": [
+    {
+      "payload": {
+        "total_amount": 50000,
+        "currency_code": "YER",
+        "paid_from_account": "1101"
+      },
+      "expected_balanced": true,
+      "expected_debit_total": 50000,
+      "expected_credit_total": 50000
+    }
+  ]
+}

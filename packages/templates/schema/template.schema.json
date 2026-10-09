@@ -1,0 +1,269 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TransactionTemplate",
+  "type": "object",
+  "required": [
+    "template_code",
+    "template_version",
+    "scope",
+    "category",
+    "ui",
+    "fields",
+    "journal_rules"
+  ],
+  "properties": {
+    "template_code": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "template_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "core",
+          "retail",
+          "clinic",
+          "workshop",
+          "law_office",
+          "service_office"
+        ]
+      }
+    },
+    "category": {
+      "enum": [
+        "purchases",
+        "sales",
+        "returns",
+        "settlements",
+        "damage",
+        "opening_balance",
+        "expenses",
+        "owner",
+        "services"
+      ]
+    },
+    "ui": {
+      "type": "object",
+      "required": [
+        "button_group_ar",
+        "display_name_ar",
+        "description_ar",
+        "icon",
+        "sort_order"
+      ],
+      "properties": {
+        "button_group_ar": {
+          "type": "string"
+        },
+        "display_name_ar": {
+          "type": "string"
+        },
+        "description_ar": {
+          "type": "string"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "sort_order": {
+          "type": "integer"
+        }
+      }
+    },
+    "payment_mode": {
+      "enum": [
+        "cash",
+        "credit",
+        "partial",
+        null
+      ]
+    },
+    "requires_contact": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "enum": [
+            "customer",
+            "supplier",
+            "employee",
+            "other",
+            null
+          ]
+        },
+        "allow_quick_add": {
+          "type": "boolean"
+        }
+      }
+    },
+    "inventory_effect": {
+      "enum": [
+        "none",
+        "increase",
+        "decrease"
+      ]
+    },
+    "allow_quick_mode": {
+      "type": "boolean",
+      "default": false
+    },
+    "allow_distribution": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_system_generated": {
+      "type": "boolean",
+      "default": false
+    },
+    "one_time_only": {
+      "type": "boolean",
+      "default": false
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/field"
+      }
+    },
+    "journal_rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/journalLineRule"
+      }
+    },
+    "secondary_journal_rules": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/journalLineRule"
+      }
+    },
+    "post_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "golden_test_cases": {
+      "type": "array"
+    }
+  },
+  "definitions": {
+    "field": {
+      "type": "object",
+      "required": [
+        "key",
+        "type",
+        "label_ar",
+        "required"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "amount",
+            "date",
+            "number",
+            "text",
+            "contact_picker",
+            "item_picker",
+            "distribution_table",
+            "select",
+            "currency_picker",
+            "toggle"
+          ]
+        },
+        "label_ar": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {},
+        "options": {
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "options_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visible_when": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "journalLineRule": {
+      "type": "object",
+      "required": [
+        "account_code_ref",
+        "side",
+        "amount_formula"
+      ],
+      "properties": {
+        "account_code_ref": {
+          "type": "string"
+        },
+        "side": {
+          "enum": [
+            "debit",
+            "credit"
+          ]
+        },
+        "amount_formula": {
+          "type": "string"
+        },
+        "currency_ref": {
+          "type": "string",
+          "default": "{{currency_code}}"
+        },
+        "contact_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "condition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "memo_ar": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "repeat_for": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

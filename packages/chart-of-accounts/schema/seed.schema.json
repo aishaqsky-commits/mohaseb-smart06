@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ChartOfAccountsSeedFile",
+  "type": "object",
+  "required": [
+    "seed_meta",
+    "accounts"
+  ],
+  "properties": {
+    "seed_meta": {
+      "type": "object",
+      "required": [
+        "seed_version",
+        "scope",
+        "extends",
+        "description_ar"
+      ],
+      "properties": {
+        "seed_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "core",
+            "retail",
+            "clinic",
+            "workshop",
+            "law_office",
+            "service_office"
+          ]
+        },
+        "extends": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description_ar": {
+          "type": "string"
+        }
+      }
+    },
+    "accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "parent_code",
+          "account_type",
+          "name_ar_simple",
+          "is_header",
+          "is_postable",
+          "sort_order"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[0-9]{4,6}$"
+          },
+          "parent_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "account_type": {
+            "type": "string",
+            "enum": [
+              "asset",
+              "liability",
+              "equity",
+              "revenue",
+              "expense"
+            ]
+          },
+          "name_ar_simple": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "name_technical": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "description_ar": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "is_header": {
+            "type": "boolean"
+          },
+          "is_postable": {
+            "type": "boolean"
+          },
+          "is_system_account": {
+            "type": "boolean",
+            "default": false
+          },
+          "is_control_account": {
+            "type": "boolean",
+            "default": false
+          },
+          "linked_contact_type": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "customer",
+              "supplier",
+              "employee",
+              null
+            ]
+          },
+          "is_contra": {
+            "type": "boolean",
+            "default": false
+          },
+          "allow_multi_currency": {
+            "type": "boolean",
+            "default": false
+          },
+          "sort_order": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

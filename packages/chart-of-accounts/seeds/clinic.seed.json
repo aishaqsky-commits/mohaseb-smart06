@@ -1,0 +1,67 @@
+{
+  "seed_meta": {
+    "seed_version": 1,
+    "scope": "clinic",
+    "extends": "core",
+    "description_ar": "إضافات شجرة الحسابات للعيادات"
+  },
+  "accounts": [
+    {
+      "code": "1320",
+      "parent_code": "1300",
+      "account_type": "asset",
+      "name_ar_simple": "مخزون الأدوية والمستلزمات",
+      "description_ar": "الأدوية والمستلزمات الطبية بالعيادة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "2620",
+      "parent_code": "2600",
+      "account_type": "liability",
+      "name_ar_simple": "عمولات أطباء مستحقة",
+      "description_ar": "نصيب الطبيب من الكشف لسه ما انصرف",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "4160",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات الكشف الطبي",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 20
+    },
+    {
+      "code": "4161",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات الإجراءات والعمليات",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 21
+    },
+    {
+      "code": "5120",
+      "parent_code": "5100",
+      "account_type": "expense",
+      "name_ar_simple": "تكلفة الأدوية والمستلزمات المستخدمة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 20
+    },
+    {
+      "code": "5220",
+      "parent_code": "5200",
+      "account_type": "expense",
+      "name_ar_simple": "عمولات ومكافآت الأطباء",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 10
+    }
+  ]
+}

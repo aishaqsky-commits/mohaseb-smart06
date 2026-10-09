@@ -1,0 +1,17 @@
+// src/templates/fixtures/opening_balance_simple.json
+{
+  "template_code": "opening_balance_simple",
+  "template_version": 1,
+  "scope": ["retail"],
+  "category": "opening_balance",
+  "ui": { "button_group_ar": "رصيد افتتاحي", "display_name_ar": "رصيد افتتاحي مبسّط", "icon": "flag_start",
+          "description_ar": "سجّل رصيد الصندوق الابتدائي مقابل رأس المال", "sort_order": 1 },
+  "one_time_only": true,
+  "fields": [
+    { "key": "cash_balance", "type": "amount", "label_ar": "فلوس الصندوق", "required": true }
+  ],
+  "journal_rules": [
+    { "account_code_ref": "1101", "side": "debit", "amount_formula": "{{cash_balance}}" },
+    { "account_code_ref": "3100", "side": "credit", "amount_formula": "plug_balance()" }
+  ]
+}

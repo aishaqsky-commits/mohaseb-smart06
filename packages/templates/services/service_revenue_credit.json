@@ -1,0 +1,78 @@
+{
+  "template_code": "service_revenue_credit",
+  "template_version": 1,
+  "scope": [
+    "clinic",
+    "workshop",
+    "law_office",
+    "service_office"
+  ],
+  "category": "services",
+  "ui": {
+    "button_group_ar": "تحصيل أتعاب",
+    "display_name_ar": "أتعاب آجلة",
+    "icon": "cart_clock",
+    "description_ar": "سجّل الأتعاب على ذمة العميل",
+    "sort_order": 3
+  },
+  "payment_mode": "credit",
+  "requires_contact": {
+    "required": true,
+    "type": "customer",
+    "allow_quick_add": true
+  },
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "job_id",
+      "type": "select",
+      "label_ar": "مرتبط بملف؟",
+      "required": false,
+      "options_source": "open_jobs()"
+    },
+    {
+      "key": "revenue_account",
+      "type": "select",
+      "label_ar": "نوع الإيراد",
+      "required": true,
+      "options_source": "revenue_accounts_for_scope()"
+    },
+    {
+      "key": "amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "customer_id",
+      "type": "contact_picker",
+      "label_ar": "العميل/الموكل",
+      "required": true
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "1210",
+      "side": "debit",
+      "amount_formula": "{{amount}}",
+      "contact_ref": "{{customer_id}}"
+    },
+    {
+      "account_code_ref": "{{revenue_account}}",
+      "side": "credit",
+      "amount_formula": "{{amount}}"
+    }
+  ]
+}

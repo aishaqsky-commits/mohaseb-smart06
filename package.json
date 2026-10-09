@@ -1,0 +1,25 @@
+{
+  "name": "mohaseb-smart-monorepo",
+  "version": "1.0.0",
+  "description": "منصة المحاسب الذكي للتجار وأصحاب المهن الخدمية (Smart Merchant Accounting Platform)",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run --prefix packages/core-accounting build",
+    "test": "npm run --prefix packages/core-accounting test",
+    "test:watch": "npm run --prefix packages/core-accounting test:watch"
+  },
+  "keywords": [
+    "accounting",
+    "double-entry",
+    "local-first",
+    "offline-first",
+    "yemen",
+    "smart-merchant",
+    "fintech"
+  ],
+  "author": "Smart Merchant Accounting Team",
+  "license": "UNLICENSED"
+}

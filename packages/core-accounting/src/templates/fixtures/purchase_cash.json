@@ -1,0 +1,19 @@
+// src/templates/fixtures/purchase_cash.json
+{
+  "template_code": "purchase_cash",
+  "template_version": 1,
+  "scope": ["retail"],
+  "category": "purchases",
+  "ui": { "button_group_ar": "اشتريت", "display_name_ar": "شراء نقدًا", "icon": "cart_download",
+          "description_ar": "اشتريت بضاعة ودفعت الفلوس كاش", "sort_order": 1 },
+  "fields": [
+    { "key": "total_amount", "type": "amount", "label_ar": "المبلغ", "required": true },
+    { "key": "paid_from_account", "type": "select", "label_ar": "دفعت من وين؟", "required": true,
+      "options": ["1101", "1110"] }
+  ],
+  "journal_rules": [
+    { "account_code_ref": "1310", "side": "debit", "amount_formula": "{{total_amount}}" },
+    { "account_code_ref": "{{paid_from_account}}", "side": "credit", "amount_formula": "{{total_amount}}" }
+  ]
+}
+JSON

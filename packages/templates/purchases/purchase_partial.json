@@ -1,0 +1,88 @@
+{
+  "template_code": "purchase_partial",
+  "template_version": 1,
+  "scope": [
+    "retail",
+    "clinic",
+    "workshop",
+    "service_office"
+  ],
+  "category": "purchases",
+  "ui": {
+    "button_group_ar": "اشتريت",
+    "display_name_ar": "شراء جزئي",
+    "icon": "cart_split",
+    "description_ar": "دفعت جزء والباقي صار دين على المورد",
+    "sort_order": 3
+  },
+  "payment_mode": "partial",
+  "requires_contact": {
+    "required": true,
+    "type": "supplier",
+    "allow_quick_add": true
+  },
+  "inventory_effect": "increase",
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "total_amount",
+      "type": "amount",
+      "label_ar": "المبلغ الكلي",
+      "required": true
+    },
+    {
+      "key": "paid_amount",
+      "type": "amount",
+      "label_ar": "دفعت الآن كم؟",
+      "required": true,
+      "validation": "paid_amount <= total_amount"
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "paid_from_account",
+      "type": "select",
+      "label_ar": "دفعت من وين؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110",
+        "1120"
+      ]
+    },
+    {
+      "key": "supplier_id",
+      "type": "contact_picker",
+      "label_ar": "المورد",
+      "required": true
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "1310",
+      "side": "debit",
+      "amount_formula": "{{total_amount}}"
+    },
+    {
+      "account_code_ref": "{{paid_from_account}}",
+      "side": "credit",
+      "amount_formula": "{{paid_amount}}"
+    },
+    {
+      "account_code_ref": "2110",
+      "side": "credit",
+      "amount_formula": "remaining({{total_amount}},{{paid_amount}})",
+      "contact_ref": "{{supplier_id}}"
+    }
+  ]
+}

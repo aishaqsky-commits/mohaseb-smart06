@@ -1,0 +1,536 @@
+{
+  "seed_meta": {
+    "seed_version": 1,
+    "scope": "core",
+    "extends": null,
+    "description_ar": "شجرة الحسابات الأساسية المشتركة لكل الأنشطة"
+  },
+  "accounts": [
+    {
+      "code": "1000",
+      "parent_code": null,
+      "account_type": "asset",
+      "name_ar_simple": "الأصول",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 10
+    },
+    {
+      "code": "1100",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "النقدية وما يعادلها",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 11
+    },
+    {
+      "code": "1101",
+      "parent_code": "1100",
+      "account_type": "asset",
+      "name_ar_simple": "الصندوق الرئيسي",
+      "name_technical": "النقدية بالصندوق - العملة الأساسية",
+      "description_ar": "فلوسك الكاش في المحل",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "allow_multi_currency": true,
+      "sort_order": 1
+    },
+    {
+      "code": "1110",
+      "parent_code": "1100",
+      "account_type": "asset",
+      "name_ar_simple": "البنك",
+      "description_ar": "رصيدك في الحساب البنكي",
+      "is_header": false,
+      "is_postable": true,
+      "allow_multi_currency": true,
+      "sort_order": 2
+    },
+    {
+      "code": "1120",
+      "parent_code": "1100",
+      "account_type": "asset",
+      "name_ar_simple": "محافظ إلكترونية",
+      "description_ar": "جوالي، كريمي، فلوسك وغيرها",
+      "is_header": false,
+      "is_postable": true,
+      "allow_multi_currency": true,
+      "sort_order": 3
+    },
+    {
+      "code": "1200",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "المدينون",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 12
+    },
+    {
+      "code": "1210",
+      "parent_code": "1200",
+      "account_type": "asset",
+      "name_ar_simple": "العملاء",
+      "description_ar": "الفلوس اللي عند الناس (آجل)",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "is_control_account": true,
+      "linked_contact_type": "customer",
+      "sort_order": 1
+    },
+    {
+      "code": "1220",
+      "parent_code": "1200",
+      "account_type": "asset",
+      "name_ar_simple": "سلف الموظفين",
+      "is_header": false,
+      "is_postable": true,
+      "is_control_account": true,
+      "linked_contact_type": "employee",
+      "sort_order": 2
+    },
+    {
+      "code": "1230",
+      "parent_code": "1200",
+      "account_type": "asset",
+      "name_ar_simple": "ذمم مدينة أخرى",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 3
+    },
+    {
+      "code": "1300",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "المخزون",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 13
+    },
+    {
+      "code": "1400",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "مصروفات مدفوعة مقدمًا",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 14
+    },
+    {
+      "code": "1410",
+      "parent_code": "1400",
+      "account_type": "asset",
+      "name_ar_simple": "إيجار مدفوع مقدمًا",
+      "description_ar": "إيجار دفعته مقدم لفترة قادمة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "1420",
+      "parent_code": "1400",
+      "account_type": "asset",
+      "name_ar_simple": "مصروفات مقدمة أخرى",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 2
+    },
+    {
+      "code": "1500",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "الأصول الثابتة",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 15
+    },
+    {
+      "code": "1510",
+      "parent_code": "1500",
+      "account_type": "asset",
+      "name_ar_simple": "أثاث ومعدات",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "1520",
+      "parent_code": "1500",
+      "account_type": "asset",
+      "name_ar_simple": "سيارات ووسائل نقل",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 2
+    },
+    {
+      "code": "1590",
+      "parent_code": "1500",
+      "account_type": "asset",
+      "name_ar_simple": "مجمع إهلاك الأصول الثابتة",
+      "is_header": false,
+      "is_postable": true,
+      "is_contra": true,
+      "sort_order": 9
+    },
+    {
+      "code": "1600",
+      "parent_code": "1000",
+      "account_type": "asset",
+      "name_ar_simple": "أصول أخرى",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 16
+    },
+    {
+      "code": "2000",
+      "parent_code": null,
+      "account_type": "liability",
+      "name_ar_simple": "الخصوم",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 20
+    },
+    {
+      "code": "2100",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "الموردون",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 21
+    },
+    {
+      "code": "2110",
+      "parent_code": "2100",
+      "account_type": "liability",
+      "name_ar_simple": "الموردون",
+      "description_ar": "الفلوس اللي عليك للناس (آجل)",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "is_control_account": true,
+      "linked_contact_type": "supplier",
+      "sort_order": 1
+    },
+    {
+      "code": "2200",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "القروض",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 22
+    },
+    {
+      "code": "2210",
+      "parent_code": "2200",
+      "account_type": "liability",
+      "name_ar_simple": "قروض قصيرة الأجل",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "2220",
+      "parent_code": "2200",
+      "account_type": "liability",
+      "name_ar_simple": "قروض طويلة الأجل",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 2
+    },
+    {
+      "code": "2300",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "مستحقات",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 23
+    },
+    {
+      "code": "2310",
+      "parent_code": "2300",
+      "account_type": "liability",
+      "name_ar_simple": "رواتب مستحقة",
+      "description_ar": "رواتب موظفين لسه ما انصرفت",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "2320",
+      "parent_code": "2300",
+      "account_type": "liability",
+      "name_ar_simple": "مصروفات مستحقة أخرى",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 2
+    },
+    {
+      "code": "2400",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "دفعات مقدمة من عملاء",
+      "description_ar": "عميل دفع لك مقدم قبل التسليم",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 24
+    },
+    {
+      "code": "2500",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "ضرائب مستحقة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 25
+    },
+    {
+      "code": "2600",
+      "parent_code": "2000",
+      "account_type": "liability",
+      "name_ar_simple": "خصوم أخرى",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 26
+    },
+    {
+      "code": "3000",
+      "parent_code": null,
+      "account_type": "equity",
+      "name_ar_simple": "حقوق الملكية",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 30
+    },
+    {
+      "code": "3100",
+      "parent_code": "3000",
+      "account_type": "equity",
+      "name_ar_simple": "رأس المال",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 1
+    },
+    {
+      "code": "3200",
+      "parent_code": "3000",
+      "account_type": "equity",
+      "name_ar_simple": "مسحوبات المالك",
+      "description_ar": "الفلوس اللي سحبتها لنفسك من المحل",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "is_contra": true,
+      "sort_order": 2
+    },
+    {
+      "code": "3300",
+      "parent_code": "3000",
+      "account_type": "equity",
+      "name_ar_simple": "أرباح مرحّلة",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 3
+    },
+    {
+      "code": "4000",
+      "parent_code": null,
+      "account_type": "revenue",
+      "name_ar_simple": "الإيرادات",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 40
+    },
+    {
+      "code": "4100",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات أخرى",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "4200",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "مردودات ومسموحات",
+      "description_ar": "قيمة المرتجعات والخصومات الممنوحة",
+      "is_header": false,
+      "is_postable": true,
+      "is_contra": true,
+      "sort_order": 2
+    },
+    {
+      "code": "4900",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "أرباح فروق العملة",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 9
+    },
+    {
+      "code": "5000",
+      "parent_code": null,
+      "account_type": "expense",
+      "name_ar_simple": "المصروفات",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 50
+    },
+    {
+      "code": "5100",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "تكلفة المبيعات/الخدمات",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 1
+    },
+    {
+      "code": "5200",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "الرواتب والأجور",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 2
+    },
+    {
+      "code": "5201",
+      "parent_code": "5200",
+      "account_type": "expense",
+      "name_ar_simple": "رواتب وأجور الموظفين",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5300",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "الإيجارات",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 3
+    },
+    {
+      "code": "5301",
+      "parent_code": "5300",
+      "account_type": "expense",
+      "name_ar_simple": "إيجار المحل/المكتب",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5400",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "كهرباء ومياه",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 4
+    },
+    {
+      "code": "5401",
+      "parent_code": "5400",
+      "account_type": "expense",
+      "name_ar_simple": "فاتورة الكهرباء والمياه",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5500",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "النظافة",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 5
+    },
+    {
+      "code": "5501",
+      "parent_code": "5500",
+      "account_type": "expense",
+      "name_ar_simple": "مصروفات النظافة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5600",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "الدعاية والتسويق",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 6
+    },
+    {
+      "code": "5601",
+      "parent_code": "5600",
+      "account_type": "expense",
+      "name_ar_simple": "مواد دعائية وإعلانات",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5700",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "التالف والخسائر",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 7
+    },
+    {
+      "code": "5701",
+      "parent_code": "5700",
+      "account_type": "expense",
+      "name_ar_simple": "تالف ومنتهي الصلاحية",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5800",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "مصروفات عمومية أخرى",
+      "is_header": true,
+      "is_postable": false,
+      "sort_order": 8
+    },
+    {
+      "code": "5801",
+      "parent_code": "5800",
+      "account_type": "expense",
+      "name_ar_simple": "مصروفات متنوعة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "5900",
+      "parent_code": "5000",
+      "account_type": "expense",
+      "name_ar_simple": "خسائر فروق العملة",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 9
+    }
+  ]
+}

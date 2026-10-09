@@ -1,0 +1,58 @@
+{
+  "template_code": "owner_deposit",
+  "template_version": 1,
+  "scope": [
+    "core"
+  ],
+  "category": "owner",
+  "ui": {
+    "button_group_ar": "المالك",
+    "display_name_ar": "إيداع المالك",
+    "icon": "wallet_in",
+    "description_ar": "حطيت فلوس من جيبك في المحل",
+    "sort_order": 2
+  },
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "deposit_to_account",
+      "type": "select",
+      "label_ar": "حطيتها وين؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110"
+      ]
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "{{deposit_to_account}}",
+      "side": "debit",
+      "amount_formula": "{{amount}}"
+    },
+    {
+      "account_code_ref": "3100",
+      "side": "credit",
+      "amount_formula": "{{amount}}"
+    }
+  ]
+}

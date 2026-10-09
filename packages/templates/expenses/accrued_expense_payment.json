@@ -1,0 +1,66 @@
+{
+  "template_code": "accrued_expense_payment",
+  "template_version": 1,
+  "scope": [
+    "core"
+  ],
+  "category": "expenses",
+  "ui": {
+    "button_group_ar": "مصروفات",
+    "display_name_ar": "سداد مصروف مستحق",
+    "icon": "payment_send",
+    "description_ar": "دفعت مصروف كان مسجل عليك من قبل",
+    "sort_order": 4
+  },
+  "fields": [
+    {
+      "key": "transaction_date",
+      "type": "date",
+      "label_ar": "التاريخ",
+      "required": true,
+      "default": "today"
+    },
+    {
+      "key": "amount",
+      "type": "amount",
+      "label_ar": "المبلغ",
+      "required": true
+    },
+    {
+      "key": "currency_code",
+      "type": "currency_picker",
+      "label_ar": "العملة",
+      "required": true
+    },
+    {
+      "key": "paid_from_account",
+      "type": "select",
+      "label_ar": "دفعت من وين؟",
+      "required": true,
+      "options": [
+        "1101",
+        "1110",
+        "1120"
+      ]
+    },
+    {
+      "key": "employee_id",
+      "type": "contact_picker",
+      "label_ar": "الموظف (إن وُجد)",
+      "required": false
+    }
+  ],
+  "journal_rules": [
+    {
+      "account_code_ref": "2310",
+      "side": "debit",
+      "amount_formula": "{{amount}}",
+      "contact_ref": "{{employee_id}}"
+    },
+    {
+      "account_code_ref": "{{paid_from_account}}",
+      "side": "credit",
+      "amount_formula": "{{amount}}"
+    }
+  ]
+}

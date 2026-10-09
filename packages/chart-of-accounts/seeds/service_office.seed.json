@@ -1,0 +1,61 @@
+{
+  "seed_meta": {
+    "seed_version": 1,
+    "scope": "service_office",
+    "extends": "core",
+    "description_ar": "إضافات شجرة الحسابات لمكاتب الخدمات العامة"
+  },
+  "accounts": [
+    {
+      "code": "1340",
+      "parent_code": "1300",
+      "account_type": "asset",
+      "name_ar_simple": "مخزون مستلزمات الطباعة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 1
+    },
+    {
+      "code": "1650",
+      "parent_code": "1600",
+      "account_type": "asset",
+      "name_ar_simple": "ذمم نيابة عن العملاء",
+      "description_ar": "رسوم حكومية دفعتها نيابة عن العميل وسترجعها منه",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "is_control_account": true,
+      "linked_contact_type": "customer",
+      "sort_order": 2
+    },
+    {
+      "code": "4190",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات عمولة الخدمات",
+      "description_ar": "ربحك من إنجاز المعاملة",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 50
+    },
+    {
+      "code": "4191",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات الطباعة والتصوير",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 51
+    },
+    {
+      "code": "5150",
+      "parent_code": "5100",
+      "account_type": "expense",
+      "name_ar_simple": "تكلفة مستلزمات الطباعة",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 50
+    }
+  ]
+}

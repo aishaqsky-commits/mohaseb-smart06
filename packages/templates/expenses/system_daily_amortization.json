@@ -1,0 +1,29 @@
+{
+  "template_code": "system_daily_amortization",
+  "template_version": 1,
+  "scope": [
+    "core"
+  ],
+  "category": "expenses",
+  "is_system_generated": true,
+  "ui": {
+    "button_group_ar": null,
+    "display_name_ar": "استهلاك يومي تلقائي",
+    "icon": "clock",
+    "description_ar": "توليد تلقائي من محرك التطبيق - لا يظهر للمستخدم",
+    "sort_order": 99
+  },
+  "fields": [],
+  "journal_rules": [
+    {
+      "account_code_ref": "{{expense_category}}",
+      "side": "debit",
+      "amount_formula": "{{daily_share_amount}}"
+    },
+    {
+      "account_code_ref": "1410",
+      "side": "credit",
+      "amount_formula": "{{daily_share_amount}}"
+    }
+  ]
+}

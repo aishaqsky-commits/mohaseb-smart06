@@ -1,0 +1,43 @@
+{
+  "seed_meta": {
+    "seed_version": 1,
+    "scope": "retail",
+    "extends": "core",
+    "description_ar": "إضافات شجرة الحسابات لنشاط التجزئة (بقالة، ملابس، مواد غذائية...)"
+  },
+  "accounts": [
+    {
+      "code": "1310",
+      "parent_code": "1300",
+      "account_type": "asset",
+      "name_ar_simple": "مخزون البضاعة",
+      "description_ar": "قيمة البضاعة الموجودة بالمحل",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 1
+    },
+    {
+      "code": "4150",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات المبيعات",
+      "description_ar": "كل فلوس المبيعات",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 10
+    },
+    {
+      "code": "5110",
+      "parent_code": "5100",
+      "account_type": "expense",
+      "name_ar_simple": "تكلفة البضاعة المباعة",
+      "description_ar": "تكلفة الأصناف اللي بعتها فعلًا",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 10
+    }
+  ]
+}

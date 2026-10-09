@@ -1,0 +1,52 @@
+{
+  "seed_meta": {
+    "seed_version": 1,
+    "scope": "law_office",
+    "extends": "core",
+    "description_ar": "إضافات شجرة الحسابات لمكاتب المحاماة"
+  },
+  "accounts": [
+    {
+      "code": "1640",
+      "parent_code": "1600",
+      "account_type": "asset",
+      "name_ar_simple": "ذمم نيابة عن الموكلين",
+      "description_ar": "رسوم محاكم ومصاريف دفعتها نيابة عن الموكل وسترجعها منه",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "is_control_account": true,
+      "linked_contact_type": "customer",
+      "sort_order": 1
+    },
+    {
+      "code": "4180",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات الأتعاب القانونية",
+      "is_header": false,
+      "is_postable": true,
+      "is_system_account": true,
+      "sort_order": 40
+    },
+    {
+      "code": "4181",
+      "parent_code": "4000",
+      "account_type": "revenue",
+      "name_ar_simple": "إيرادات الاستشارات القانونية",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 41
+    },
+    {
+      "code": "5140",
+      "parent_code": "5100",
+      "account_type": "expense",
+      "name_ar_simple": "رسوم ومصاريف قضائية غير مستردة",
+      "description_ar": "مصاريف دفعتها نيابة عن الموكل ولم تسترجعها",
+      "is_header": false,
+      "is_postable": true,
+      "sort_order": 40
+    }
+  ]
+}
