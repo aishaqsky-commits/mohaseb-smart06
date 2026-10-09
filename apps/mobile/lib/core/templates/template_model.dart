@@ -5,6 +5,7 @@ class TemplateField {
   final bool required;
   final dynamic defaultValue;
   final String? visibleWhen;
+  final List<String>? options;
 
   TemplateField({
     required this.key,
@@ -13,6 +14,7 @@ class TemplateField {
     required this.required,
     this.defaultValue,
     this.visibleWhen,
+    this.options,
   });
 
   factory TemplateField.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class TemplateField {
       required: json['required'] as bool? ?? false,
       defaultValue: json['default'],
       visibleWhen: json['visible_when'] as String?,
+      options: (json['options'] as List?)?.map((e) => e.toString()).toList(),
     );
   }
 }
@@ -53,12 +56,37 @@ class TemplateUI {
   }
 }
 
+class JournalRule {
+  final String accountCodeRef;
+  final String side;
+  final String amountFormula;
+  final String? condition;
+
+  JournalRule({
+    required this.accountCodeRef,
+    required this.side,
+    required this.amountFormula,
+    this.condition,
+  });
+
+  factory JournalRule.fromJson(Map<String, dynamic> json) {
+    return JournalRule(
+      accountCodeRef: json['account_code_ref'] as String,
+      side: json['side'] as String,
+      amountFormula: json['amount_formula'] as String,
+      condition: json['condition'] as String?,
+    );
+  }
+}
+
 class TransactionTemplate {
   final String templateCode;
   final int templateVersion;
   final String category;
   final TemplateUI ui;
   final List<TemplateField> fields;
+  final List<JournalRule> journalRules;
+  final List<JournalRule> secondaryJournalRules;
 
   TransactionTemplate({
     required this.templateCode,
@@ -66,16 +94,22 @@ class TransactionTemplate {
     required this.category,
     required this.ui,
     required this.fields,
+    this.journalRules = const [],
+    this.secondaryJournalRules = const [],
   });
 
   factory TransactionTemplate.fromJson(Map<String, dynamic> json) {
     var fieldsList = json['fields'] as List? ?? [];
+    var jrList = json['journal_rules'] as List? ?? [];
+    var sjrList = json['secondary_journal_rules'] as List? ?? [];
     return TransactionTemplate(
       templateCode: json['template_code'] as String,
       templateVersion: json['template_version'] as int,
       category: json['category'] as String,
       ui: TemplateUI.fromJson(json['ui'] as Map<String, dynamic>),
       fields: fieldsList.map((f) => TemplateField.fromJson(f as Map<String, dynamic>)).toList(),
+      journalRules: jrList.map((r) => JournalRule.fromJson(r as Map<String, dynamic>)).toList(),
+      secondaryJournalRules: sjrList.map((r) => JournalRule.fromJson(r as Map<String, dynamic>)).toList(),
     );
   }
 }
