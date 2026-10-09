@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/color_tokens.dart';
 import '../../data/repositories/item_repository.dart';
@@ -49,6 +50,11 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       appBar: AppBar(
         title: const Text('المخزون'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.warehouse),
+            onPressed: () => context.push('/inventory/warehouses'),
+            tooltip: 'الفروع والمخازن',
+          ),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {},

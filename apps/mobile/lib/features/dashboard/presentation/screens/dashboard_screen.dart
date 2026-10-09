@@ -19,6 +19,12 @@ class DashboardScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.point_of_sale, color: ColorTokens.positive),
+            onPressed: () {
+              context.push('/pos');
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {},
           ),
@@ -191,14 +197,14 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _buildQuickActionsGrid(BuildContext context) {
     final actions = [
-      {'label': 'بعت', 'icon': '🛒', 'color': ColorTokens.positive},
-      {'label': 'اشتريت', 'icon': '💵', 'color': ColorTokens.negative},
-      {'label': 'تحصيل', 'icon': '📥', 'color': ColorTokens.neutralInfo},
-      {'label': 'سداد', 'icon': '📤', 'color': ColorTokens.warning},
-      {'label': 'تالف', 'icon': '🗑️', 'color': Colors.grey},
-      {'label': 'مصروف', 'icon': '🧾', 'color': Colors.deepOrange},
-      {'label': 'المزيد', 'icon': '➕', 'color': Colors.grey.shade700},
-      {'label': 'سجل', 'icon': '📋', 'color': Colors.blueGrey},
+      {'label': 'بعت', 'icon': '🛒', 'color': ColorTokens.positive, 'route': ''},
+      {'label': 'اشتريت', 'icon': '💵', 'color': ColorTokens.negative, 'route': ''},
+      {'label': 'تحصيل', 'icon': '📥', 'color': ColorTokens.neutralInfo, 'route': ''},
+      {'label': 'سداد', 'icon': '📤', 'color': ColorTokens.warning, 'route': ''},
+      {'label': 'شيكات', 'icon': '💳', 'color': Colors.deepPurple, 'route': '/checks'},
+      {'label': 'مصروف', 'icon': '🧾', 'color': Colors.deepOrange, 'route': ''},
+      {'label': 'تالف', 'icon': '🗑️', 'color': Colors.grey, 'route': ''},
+      {'label': 'سجل', 'icon': '📋', 'color': Colors.blueGrey, 'route': ''},
     ];
 
     return GridView.builder(
@@ -214,7 +220,12 @@ class DashboardScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final action = actions[index];
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            final route = action['route'] as String;
+            if (route.isNotEmpty) {
+              context.push(route);
+            }
+          },
           borderRadius: BorderRadius.circular(12),
           child: Container(
             decoration: BoxDecoration(
