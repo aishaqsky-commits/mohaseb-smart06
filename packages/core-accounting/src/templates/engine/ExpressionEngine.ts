@@ -5,7 +5,12 @@ import { AstNode, Parser, PathSegment } from "./Parser";
 import { FunctionRegistry } from "./FunctionRegistry";
 import { ExpressionEvaluationError } from "./errors";
 
-export type ExprValue = Decimal | string | boolean | null | ExprValue[];
+/**
+ * أنواع القيم المقبولة. يُستخدم `unknown` بدل `number` صراحةً لأن:
+ * 1) قيم JSON القادمة من واجهات الإدخال تكون أرقامًا JS عادية (number).
+ * 2) المصفوفات داخل payload غير معروفة البنية مسبقًا، والـ collect ([]) يعيد مصفوفات قيم خام.
+ */
+export type ExprValue = Decimal | string | boolean | number | null | unknown[];
 
 export interface ExpressionContext {
   /** بيانات الحقول الخام المُدخَلة من المستخدم، بالإضافة لأي نطاقات مُحقَنة مثل job/tenant */
@@ -171,6 +176,9 @@ export class ExpressionEngine {
 
   static toDecimal(value: ExprValue): Decimal {
     if (value instanceof Decimal) return value;
+    if (typeof value === "number" && Number.isFinite(value)) {
+      return new Decimal(value);
+    }
     if (typeof value === "string" && value.trim() !== "" && !isNaN(Number(value))) {
       return new Decimal(value);
     }

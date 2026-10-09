@@ -6,7 +6,12 @@ import { ExpressionEvaluationError, UnknownFunctionError } from "./errors";
 
 type FunctionImpl = (args: ExprValue[], context: ExpressionContext) => ExprValue;
 
-function toDecimalStrict(value: ExprValue, fnName: string, argIndex: number): Decimal {
+function toDecimalStrict(value: ExprValue | undefined, fnName: string, argIndex: number): Decimal {
+  if (value === undefined) {
+    throw new ExpressionEvaluationError(
+      `الدالة "${fnName}": المعطى رقم ${argIndex + 1} مفقود`
+    );
+  }
   if (value instanceof Decimal) return value;
   if (typeof value === "number") return new Decimal(value);
   if (typeof value === "string" && value.trim() !== "" && !isNaN(Number(value))) {
@@ -64,7 +69,8 @@ export class FunctionRegistry {
         throw new ExpressionEvaluationError('الدالة "sum" تتطلب مصفوفة كمعطى (استخدم نمط [] في المسار)');
       }
       return arr.reduce(
-        (acc: Decimal, v) => acc.plus(toDecimalStrict(v, "sum", 0)),
+        // عناصر المصفوفة من payload لها نوع unknown، وتُتحقق منها toDecimalStrict أثناء التحويل
+        (acc: Decimal, v: unknown) => acc.plus(toDecimalStrict(v as ExprValue, "sum", 0)),
         new Decimal(0)
       );
     });

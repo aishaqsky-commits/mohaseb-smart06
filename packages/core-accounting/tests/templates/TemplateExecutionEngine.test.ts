@@ -67,9 +67,9 @@ describe("TemplateExecutionEngine - اختبارات تكامل شاملة عب�
 
     const registry = new TemplateRegistry();
     registry.registerMany([
-      purchaseCashTemplate as TemplateDefinition,
-      saleCashTemplate as TemplateDefinition,
-      inventoryDamageTemplate as TemplateDefinition,
+      purchaseCashTemplate as unknown as TemplateDefinition,
+      saleCashTemplate as unknown as TemplateDefinition,
+      inventoryDamageTemplate as unknown as TemplateDefinition,
       openingBalanceTemplate as TemplateDefinition,
     ]);
 
@@ -140,7 +140,9 @@ describe("TemplateExecutionEngine - اختبارات تكامل شاملة عب�
       const total = (Math.floor(Math.random() * 100000) / 100).toFixed(2);
       const p1 = Math.random() * 100;
       const p2 = Math.random() * (100 - p1);
-      const p3 = 100 - p1 - p2;
+      // النسبة الثالثة تُحسب بالمكمّل العشري الدقيق (Decimal) لتفادي أخطاء IEEE-754
+      // التي تجعل sum(percentages) != 100 فيتم رفض التحقق (سلوك صحيح من المدقق).
+      const p3 = new Decimal(100).minus(new Decimal(p1)).minus(new Decimal(p2)).toNumber();
 
       const result = await engine.execute({
         templateCode: "inventory_damage", tenantId: TENANT_ID, baseCurrencyCode: "YER",

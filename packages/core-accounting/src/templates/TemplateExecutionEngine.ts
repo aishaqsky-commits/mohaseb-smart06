@@ -169,18 +169,30 @@ export class TemplateExecutionEngine {
       // === قاعدة التقريب الإلزامية (مُختبَرة سابقًا بـ Fuzz Test) ===
       if (isLastItem && rule.rounding_anchor_field) {
         const anchorTotal = ExpressionEngine.evaluateAsDecimal(rule.rounding_anchor_field, loopContext);
-        const sumSoFar = generatedAmounts.reduce((a, b) => a.plus(b), new Decimal(0));
-        amount = anchorTotal.minus(sumSoFar);
+        // المبلغ النهائي = المرساة مطروحًا عنها مجموع الأسطر السابقة بعد التقريب الفعلي
+        // إلى دقة التخزين — وهي نفس القيم التي ستُخزَّن وتُجمع لاحقًا في assertBalanced.
+        // هذا يضمن توازن القيد تمامًا حتى مع نسب كسرية غير تمثيلية ثنائيًا (IEEE-754).
+        const sumSoFarRounded = generatedAmounts.reduce(
+          (acc, v) => acc.plus(this.clampToStorage(v)),
+          new Decimal(0)
+        );
+        amount = this.clampToStorage(anchorTotal).minus(sumSoFarRounded);
       } else {
         amount = ExpressionEngine.evaluateAsDecimal(rule.amount_formula, loopContext);
       }
 
       generatedAmounts.push(amount);
 
+      // السطر الأخير المُقرَّر قد يصبح صفراً أو سالبًا بهوامش التقريب — لا يُضاف كسطر
       if (amount.greaterThan(0)) {
         outputLines.push(await this.buildPostLineRequest(rule, amount, loopContext, request));
       }
     }
+  }
+
+  /** يقرّب مبلغًا إلى دقة التخزين المعتمدة (نفس دقة toStorageString في Money) */
+  private clampToStorage(amount: Decimal): Decimal {
+    return new Decimal(amount.toFixed(Money.STORAGE_DECIMALS, Decimal.ROUND_HALF_UP));
   }
 
   private async buildPostLineRequest(

@@ -21,5 +21,8 @@
     "fintech"
   ],
   "author": "Smart Merchant Accounting Team",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/jest": "^30.0.0"
+  }
 }

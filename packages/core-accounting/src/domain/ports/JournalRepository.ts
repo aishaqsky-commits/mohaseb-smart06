@@ -12,4 +12,7 @@ export interface JournalRepository {
   findById(tenantId: string, entryId: string): Promise<JournalEntry | null>;
   getFiscalPeriodStatus(tenantId: string, entryDate: Date): Promise<FiscalPeriodStatus>;
 }
-فائدة هذا الفصل: JournalEngine أدناه لا يعرف شيئًا عن SQLite أو PostgreSQL — يمكن اختباره بالكامل بمستودعات وهمية (In-Memory Fakes)، ويمكن استبدال التخزين لاحقًا دون تعديل منطق الأعمال.
+
+// فائدة هذا الفصل: JournalEngine أدناه لا يعرف شيئًا عن SQLite أو PostgreSQL —
+// يمكن اختباره بالكامل بمستودعات وهمية (In-Memory Fakes)، ويمكن استبدال التخزين
+// لاحقًا دون تعديل منطق الأعمال.

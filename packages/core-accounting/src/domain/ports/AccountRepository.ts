@@ -7,4 +7,3 @@ export interface AccountRepository {
   findByCode(tenantId: string, code: string): Promise<Account | null>;
   findManyByCodes(tenantId: string, codes: string[]): Promise<Map<string, Account>>;
 }
-TypeScript

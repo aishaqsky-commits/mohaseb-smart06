@@ -1,4 +1,3 @@
-// src/templates/fixtures/sale_cash.json
 {
   "template_code": "sale_cash",
   "template_version": 1,
@@ -22,4 +21,3 @@
     { "account_code_ref": "1310", "side": "credit", "amount_formula": "cogs_amount()", "condition": "inventory_mode == true" }
   ]
 }
-JSON
