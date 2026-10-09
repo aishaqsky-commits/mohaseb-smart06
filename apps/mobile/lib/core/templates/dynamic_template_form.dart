@@ -121,7 +121,7 @@ class _DynamicTemplateFormState extends State<DynamicTemplateForm> {
           value: _formData[field.key] == true,
           onChanged: (val) => _updateField(field.key, val),
           contentPadding: EdgeInsets.zero,
-          activeTrackColor: ColorTokens.positive.withOpacity(0.5),
+          activeTrackColor: ColorTokens.positive.withValues(alpha: 0.5),
           activeThumbColor: ColorTokens.positive,
         );
         break;
