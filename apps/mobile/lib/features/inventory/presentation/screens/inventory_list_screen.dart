@@ -126,7 +126,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
     final double cost = (item['average_cost'] as num?)?.toDouble() ?? 0.0;
     final double value = quantity * cost;
     final bool isLowStock = quantity < 10;
-    final bool isExpired = false; // Logic to check FEFO batches later
+    final bool isExpired = item['is_expired'] == true; // Logic to check FEFO batches later
 
     return InkWell(
       onTap: () {

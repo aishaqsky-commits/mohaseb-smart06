@@ -107,7 +107,7 @@ class _IncomeStatementScreenState extends State<IncomeStatementScreen> {
               ...items.map((item) => ListTile(
                     title: Text(item['name']),
                     trailing: Text(
-                      '${item['amount'].toStringAsFixed(0)}',
+                      item['amount'].toStringAsFixed(0),
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   )),
